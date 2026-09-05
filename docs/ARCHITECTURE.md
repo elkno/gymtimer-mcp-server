@@ -120,6 +120,15 @@ Swift-level defaults (`compound`, `push`, `hypertrophy`) until edited in the app
 Arrays (muscle groups, equipment) are unaffected, since shapes 1 and 3 are
 fully understood.
 
+Reads of these fields return `null` when the record has no value, rather than
+substituting the Swift-level default. A fabricated default is indistinguishable
+from a real one to whatever model consumes the output, which matters here
+because these fields are close to information-free in practice: an exercise
+created through MCP has no such field at all, and the app's own seeded
+exercises are largely left at `compound`/`push` regardless of the movement, so
+a Romanian deadlift can legitimately report `push`. Treat the exercise name and
+its muscle groups as the reliable signal.
+
 ## Supersets
 
 `save_workout_template` takes a `supersetGroup` number per exercise slot. Give

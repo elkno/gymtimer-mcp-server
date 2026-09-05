@@ -204,9 +204,11 @@ worked-out prompts if you'd rather copy something that already does the job.
 
 One limitation to be aware of: a few single-choice fields (an exercise's
 `category` and `movementPattern`, a cycle's `phase`) are deliberately never
-written by these tools, so new exercises and cycles keep the app's defaults
-until you edit them in the app. [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
-explains why.
+written by these tools, so anything created through MCP has no value for them.
+Reads return `null` in that case rather than guessing. Even where a value does
+exist it's usually just the app's default, so don't rely on these two fields to
+tell a push from a hinge - the exercise name and its muscle groups are the
+trustworthy signal. [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) explains why.
 
 ---
 

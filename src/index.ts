@@ -131,7 +131,7 @@ server.registerTool(
   {
     title: "Get Exercise Library",
     description:
-      "Returns the user's exercise library (name, muscle groups, equipment, category, movement pattern, whether it has a custom photo), optionally filtered. Use this to know what exercises/equipment are available when proposing a workout.",
+      "Returns the user's exercise library (name, muscle groups, equipment, category, movement pattern, whether it has a custom photo), optionally filtered. Use this to know what exercises/equipment are available when proposing a workout. Note: `category` and `movementPattern` are null when the exercise has no stored value, and in practice are unreliable even when set (this app's exercises are largely left at the defaults \"compound\"/\"push\", so a hinge or isometric movement may still report \"push\"). Judge movement patterns from the exercise name and muscleGroups instead of trusting these two fields.",
     inputSchema: {
       muscleGroup: z.string().optional().describe("Comma-separated muscle groups to filter to, e.g. \"quads,hamstrings\""),
       equipment: z.string().optional().describe("Comma-separated equipment types to filter to, e.g. \"barbell,dumbbell\"")

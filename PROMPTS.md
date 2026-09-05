@@ -191,9 +191,11 @@ Two known behaviours, both harmless once you know them:
 
 - **Some fields keep the app's defaults.** An exercise's `category` and
   `movementPattern`, and a training cycle's `phase`, are never set by these
-  tools - they'd risk corrupting how the app stores them. New exercises and
-  cycles get the app's defaults (`compound`, `push`, `hypertrophy`) until you
-  edit them on your phone. See
+  tools - they'd risk corrupting how the app stores them. Anything created
+  through MCP reads back as `null` for them, and where a value does exist it's
+  usually just the default, so an assistant shouldn't use `movementPattern` to
+  balance push against pull work. The prompts above deliberately rely on muscle
+  groups, volume and recovery instead. See
   [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the reason.
 - **Your profile is read-only here.** The assistant can read every body and
   food field but can't change them; the app is the editor. If a plan is built on

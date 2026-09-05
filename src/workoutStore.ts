@@ -162,8 +162,15 @@ interface ExerciseDTO {
   name: string;
   muscleGroups: string[];
   equipment: string[];
-  category: string;
-  movementPattern: string;
+  /**
+   * `null` when the record carries no value for it, rather than a guess. Both
+   * of these are single custom enums the write tools deliberately never set
+   * (see docs/ARCHITECTURE.md), so an exercise created through MCP has no
+   * such field at all - substituting the Swift-level default here would be
+   * indistinguishable from a real value to whatever model reads this.
+   */
+  category: string | null;
+  movementPattern: string | null;
   notes?: string;
   hasPhoto: boolean;
 }
@@ -429,8 +436,8 @@ export async function getExerciseLibrary(muscleGroupFilter?: string, equipmentFi
     name: asString(exercise.name) ?? "",
     muscleGroups: decodeStringArrayBytes(exercise.muscleGroups),
     equipment: decodeStringArrayBytes(exercise.equipment),
-    category: decodeSingleEnumBytes(exercise.category, EXERCISE_CATEGORY_VALUES) ?? "compound",
-    movementPattern: decodeSingleEnumBytes(exercise.movementPattern, MOVEMENT_PATTERN_VALUES) ?? "push",
+    category: decodeSingleEnumBytes(exercise.category, EXERCISE_CATEGORY_VALUES) ?? null,
+    movementPattern: decodeSingleEnumBytes(exercise.movementPattern, MOVEMENT_PATTERN_VALUES) ?? null,
     notes: asString(exercise.notes),
     // `Exercise.customPhotoData` is `@Attribute(.externalStorage)`, so Core
     // Data + CloudKit mirrors it as a separate `CD_customPhotoData_ckAsset`
