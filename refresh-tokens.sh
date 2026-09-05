@@ -23,7 +23,9 @@ replace_api_token=false
 if $replace_api_token; then
   echo "== CloudKit API token =="
   echo "Ask the app owner for a fresh CloudKit Web Services API Token."
-  echo "(Owners: CloudKit Console -> the container -> Tokens / API Access -> New Token."
+  echo "(Owners: CloudKit Console -> CloudKit Database -> pick the container, switch the"
+  echo " environment selector to Production -> Settings -> Tokens & Keys -> new API Token,"
+  echo " with Sign in Callback set to URL Redirect. Full steps are in README.md."
   echo " It's a long hex string, NOT the User or Management token.)"
   while :; do
     echo "Paste the new API token, then press Enter:"

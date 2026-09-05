@@ -52,6 +52,41 @@ anyone's workouts, so the owner can safely give the same token to everybody.
 What scopes things to *you* is a separate Apple ID sign-in during setup. If you
 don't have a token yet, ask the app owner before continuing.
 
+### Creating the API token (app owner only)
+
+Skip this if someone gave you a token - it only needs doing once per container,
+by whoever owns the GymTimer CloudKit container.
+
+1. Open the [CloudKit Console](https://icloud.developer.apple.com/dashboard/)
+   and choose **CloudKit Database**.
+2. Select the container `iCloud.com.elkno.gymtimer.gymtimer` in the header, and
+   **set the environment selector next to it to `Production`.** This matters:
+   `Production` is where TestFlight and App Store installs sync, and it's the
+   environment this server assumes by default. Creating the token while the
+   console is on `Development` is the single easiest mistake to make here.
+3. In the left sidebar under **Settings**, click **Tokens & Keys**.
+4. Create a new **API Token** and give it a name (`gymtimer` is fine).
+5. Configure it as follows - the callback setting is not optional:
+
+   | Setting | Value | Why |
+   | --- | --- | --- |
+   | **Sign in Callback** | **URL Redirect**, with any https URL (e.g. `https://example.com`) | Required. The sign-in flow works by reading `ckWebAuthToken` out of the URL Apple redirects to. With *Post Message* selected instead, there's no redirect to copy and setup can't complete. The URL doesn't need to exist - landing on a 404 is expected and fine. |
+   | **Allowed Origins** | Any Domain | Sign-in happens in a normal browser, not from a hosted web page. |
+   | **Discoverability** | Leave unchecked | Not needed; it only controls whether users are discoverable to others by email. |
+
+6. Copy the **API Access** token value - a long hex string - and share it with
+   whoever needs it.
+
+Two tokens in that console are *not* what you want: the **User Token** and the
+**Management Token**. Neither works with this REST flow. The one you need is
+under API Access, and `./setup.sh` will reject anything that isn't a hex string
+of the right shape.
+
+If your users will be on `Production`, also confirm the schema has been deployed
+there (**Deploy Schema Changes: Development to Production**), or their writes
+will fail on record types that only exist in development. See
+[docs/MAINTAINERS.md](docs/MAINTAINERS.md).
+
 ---
 
 ## Install (once per computer)

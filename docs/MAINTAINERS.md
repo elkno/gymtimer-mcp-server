@@ -7,19 +7,26 @@ neither Xcode nor CloudKit Console.
 ## Issuing the API token
 
 Each person who wants to run this server needs the shared CloudKit Web Services
-API token. Generate it once and hand out the same value:
+API token. Generate it once and hand out the same value - the step-by-step
+click path is in
+[README.md's "Creating the API token"](../README.md#creating-the-api-token-app-owner-only).
 
-1. Open [CloudKit Console](https://icloud.developer.apple.com/dashboard/) and
-   select the container.
-2. Under **Web Services** -> **API Access** / **Tokens**, create a
-   **CloudKit Web Services API Token**.
-3. Share the hex string. It identifies the app only - it grants no access to
-   anyone's workout data, since every read and write is additionally scoped by
-   the recipient's own Apple ID sign-in.
+The three things that actually matter, since they're the ones that go wrong:
 
-Make sure not to hand out the **User Token** or the **Management Token** by
-mistake; neither works with this REST flow. `refresh-tokens.sh --api-token`
-validates that what's pasted looks like a hex API token, which catches this.
+- **The console's environment selector must be on `Production`** when you create
+  it, because that's where TestFlight and App Store installs sync and what this
+  server defaults to.
+- **Sign in Callback must be `URL Redirect`**, not `Post Message`. The whole
+  sign-in flow depends on Apple redirecting the browser to a URL carrying
+  `ckWebAuthToken`, which `scripts/get-web-auth-token.mjs` then parses. Any
+  https URL works and it's fine if it 404s.
+- **Hand out the API Access token, not the User Token or Management Token.**
+  Neither of those works with this REST flow. `refresh-tokens.sh --api-token`
+  validates the shape, which catches the mistake.
+
+The token identifies the app only. It grants no access to anyone's workout data,
+since every read and write is additionally scoped by the recipient's own Apple
+ID sign-in - so the same value can go to everybody.
 
 This is the only CloudKit Console step anyone needs for normal use.
 
