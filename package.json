@@ -1,0 +1,52 @@
+{
+  "name": "gymtimer-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server that gives any AI assistant read and write access to your GymTimer workout, training and nutrition data, via CloudKit Web Services.",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elkno/gymtimer-mcp-server.git"
+  },
+  "main": "dist/index.js",
+  "bin": {
+    "gymtimer-mcp-server": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "scripts",
+    "setup.sh",
+    "refresh-tokens.sh",
+    "README.md",
+    "CLIENT-SETUP.md",
+    "PROMPTS.md",
+    "docs"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "start": "node dist/index.js",
+    "prepare": "tsc",
+    "doctor": "node scripts/doctor.mjs",
+    "get-web-auth-token": "node scripts/get-web-auth-token.mjs"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "cloudkit",
+    "workout",
+    "fitness",
+    "gymtimer"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.7.0"
+  }
+}
